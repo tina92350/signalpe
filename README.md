@@ -1,0 +1,2 @@
+# sigP
+model:Cnn->Rnn
