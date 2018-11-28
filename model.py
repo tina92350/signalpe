@@ -1,7 +1,7 @@
 import random
 import numpy as np
 from keras.models import Sequential
-from keras.layers import Conv1D, LSTM, Dense
+from keras.layers import Conv1D, LSTM, Dense, MaxPooling1D
 from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint, TensorBoard
 
@@ -18,10 +18,16 @@ def build_model():
     
     model.add(Conv1D(64, input_shape = (96, 21), kernel_size = 3, strides=1, padding='same', activation= 'relu'))
     model.add(Conv1D(64, kernel_size = 3, strides=1, padding='same', activation= 'relu'))
+    model.add(MaxPooling1D(pool_size=2, stride=1, padding='same'))
+
     model.add(Conv1D(128, kernel_size = 3, strides=1, padding='same', activation= 'relu'))
     model.add(Conv1D(128, kernel_size = 3, strides=1, padding='same', activation= 'relu'))
+    model.add(MaxPooling1D(pool_size=2, stride=1, padding='same'))
+    
     model.add(Conv1D(256, kernel_size = 3, strides=1, padding='same', activation= 'relu'))
     model.add(Conv1D(256, kernel_size = 3, strides=1, padding='same', activation= 'relu'))
+    model.add(MaxPooling1D(pool_size=2, stride=1, padding='same'))
+
     model.add(LSTM(64,  return_sequences = True))
     model.add(LSTM(64,  return_sequences = True))
     model.add(Dense(3,  activation='softmax'))
@@ -56,7 +62,7 @@ if __name__ == "__main__":
     random.Random(random_seed).shuffle(y)
 
     data_count = x.shape[0]
-    modelname = 'c_64_128_256r_64'
+    modelname = 'c_64_128_256r_64_with_pooling'
     training_split = 0.6
     training_size = int(data_count * training_split)
     batch_size = 32
